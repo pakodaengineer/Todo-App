@@ -151,7 +151,6 @@ body {
   display: flex;
   flex-direction: column;
   margin: 20px 0px;
-  
 }
 
 .cards-light {
@@ -187,8 +186,7 @@ body {
   color: #e18a07;
 }
 
-
-#filters{
+#filters {
   width: 25px;
   height: 25px;
   outline: none;
@@ -200,49 +198,41 @@ body {
   -webkit-appearance: none;
   appearance: none;
   cursor: pointer;
-  margin: 0px ;
+  margin: 0px;
   padding: 8px;
- 
-
-    
 }
 
-#listHeading{
+#listHeading {
   width: 50vw;
   margin: 10px 40vw;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-option{
- font-size: 16px;
-text-align: center;
- 
+option {
+  font-size: 16px;
+  text-align: center;
 }
-#opt1{
+#opt1 {
   padding: 50px;
 }
-.impTag{
-  text-align: center; 
-  margin: 5px 10px; padding:3px;
-   background-color:#ff3232; 
-   color:white;
-   font-family: cursive;
+.impTag {
+  text-align: center;
+  margin: 5px 10px;
+  padding: 3px;
+  background-color: #ff3232;
+  color: white;
+  font-family: cursive;
 }
-.cardText{
-  font-family: 'Source Sans Pro', sans-serif;
+.cardText {
+  font-family: "Source Sans Pro", sans-serif;
   font-weight: 600;
-  
 }
-.cardHead{
-  font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+.cardHead {
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
   font-weight: 900;
-
 }
-
-
-
-
 
 /* Themes class */
 .body-light {
@@ -272,13 +262,13 @@ text-align: center;
 }
 
 .nav-options-light:hover {
-  color: rgb(54, 54, 54);
+  color: rgb(255, 255, 255);
 }
 .nav-options-dark {
   color: white;
 }
 .nav-options-dark:hover {
-  color: rgb(230, 230, 230);
+  color: rgb(0, 0, 0);
 }
 
 .search-light {
