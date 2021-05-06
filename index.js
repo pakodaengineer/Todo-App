@@ -92,7 +92,7 @@ function changeTheme(params) {
 }
 
 saveBtn.addEventListener("click", (e) => {
-  if (topicName.value == "" || topicName.value.split(" ").length < 2) {
+  if (topicName.value == "") {
     topicName.style.border = "2px solid red";
   } else if (dueTime.value == "") {
     dueTime.style.border = "2px solid red";
@@ -105,64 +105,11 @@ saveBtn.addEventListener("click", (e) => {
       dueTime.style.border = "1px solid rgb(55, 55,55)";
     }
 
-    let notes = localStorage.getItem("notes");
-    if (notes == null) {
-      notesobj = [];
+    let tasks = localStorage.getItem("tasks");
+    if (tasks == null) {
+      tasksobj = [];
     } else {
-      notesobj = JSON.parse(notes);
-    }
-    let tmp1 = new Date(dueTime.value);
-    tmp = tmp1.toDateString().split(" ");
-
-    let nowTime1 = new Date();
-    nowTime = nowTime1.toDateString().split(" ");
-    //   console.log(radios)
-    let tmpType;
-    Array.from(radios).forEach((e) => {
-      if (e.checked) {
-        tmpType = e.value;
-      }
-    });
-    console.log(tmpType);
-
-    let obj = {
-      title: `${topicName.value}`,
-      description: `${description.value == undefined ? "" : description.value}`,
-      dueTime: `${tmp[2]}-${tmp[1]}-${tmp[3]}`,
-      now: `${nowTime[2]}-${nowTime[1]}-${nowTime[3]}`,
-      type: tmpType,
-      diff: `${tmp1 - nowTime1}`,
-    };
-    notesobj.unshift(obj);
-    localStorage.setItem("notes", JSON.stringify(notesobj));
-    topicName.value = "";
-    description.value = "";
-    dueTime.value = "";
-
-    // console.log(obj)
-  }
-  showTasks("all");
-});
-
-importantBtn.addEventListener("click", (e) => {
-  if (topicName.value == "" || topicName.value.split(" ").length < 2) {
-    topicName.style.border = "2px solid red";
-  } else if (dueTime.value == "") {
-    dueTime.style.border = "2px solid red";
-  } else {
-    if (currentTheme) {
-      topicName.style.border = "1px solid black";
-      dueTime.style.border = "1px solid black";
-    } else {
-      topicName.style.border = "1px solid rgb(55, 55,55)";
-      dueTime.style.border = "1px solid rgb(55, 55,55)";
-    }
-
-    let impNotes = localStorage.getItem("impNotes");
-    if (impNotes == null) {
-      impNotesobj = [];
-    } else {
-      impNotesobj = JSON.parse(impNotes);
+      tasksobj = JSON.parse(tasks);
     }
     let tmp1 = new Date(dueTime.value);
     tmp = tmp1.toDateString().split(" ");
@@ -186,8 +133,64 @@ importantBtn.addEventListener("click", (e) => {
       type: tmpType,
       diff: `${tmp1 - nowTime1}`,
     };
-    impNotesobj.unshift(obj);
-    localStorage.setItem("impNotes", JSON.stringify(impNotesobj));
+    tasksobj.unshift(obj);
+    tasksobj.sort(sortOrder("diff"));
+    localStorage.setItem("tasks", JSON.stringify(tasksobj));
+    topicName.value = "";
+    description.value = "";
+    dueTime.value = "";
+
+    // console.log(obj)
+  }
+  showTasks("all");
+});
+
+importantBtn.addEventListener("click", (e) => {
+  if (topicName.value == "") {
+    topicName.style.border = "2px solid red";
+  } else if (dueTime.value == "") {
+    dueTime.style.border = "2px solid red";
+  } else {
+    if (currentTheme) {
+      topicName.style.border = "1px solid black";
+      dueTime.style.border = "1px solid black";
+    } else {
+      topicName.style.border = "1px solid rgb(55, 55,55)";
+      dueTime.style.border = "1px solid rgb(55, 55,55)";
+    }
+
+    let impTasks = localStorage.getItem("impTasks");
+    if (impTasks == null) {
+      impTasksobj = [];
+    } else {
+      impTasksobj = JSON.parse(impTasks);
+    }
+    let tmp1 = new Date(dueTime.value);
+    tmp = tmp1.toDateString().split(" ");
+
+    let nowTime1 = new Date();
+    nowTime = nowTime1.toDateString().split(" ");
+    //   console.log(radios)
+    let tmpType;
+    Array.from(radios).forEach((e) => {
+      if (e.checked) {
+        tmpType = e.value;
+      }
+    });
+    // console.log(tmpType);
+
+    let obj = {
+      title: `${topicName.value}`,
+      description: `${description.value == undefined ? "" : description.value}`,
+      dueTime: `${tmp[2]}-${tmp[1]}-${tmp[3]}`,
+      now: `${nowTime[2]}-${nowTime[1]}-${nowTime[3]}`,
+      type: tmpType,
+      diff: `${tmp1 - nowTime1}`,
+    };
+    impTasksobj.unshift(obj);
+    impTasksobj.sort(sortOrder("diff"));
+
+    localStorage.setItem("impTasks", JSON.stringify(impTasksobj));
     topicName.value = "";
     description.value = "";
     dueTime.value = "";
@@ -198,27 +201,24 @@ importantBtn.addEventListener("click", (e) => {
 });
 
 function showTasks(params) {
-  let impNotes = localStorage.getItem("impNotes");
-  let notes = localStorage.getItem("notes");
-  if (impNotes == null) {
-    impNotesList = [];
+  let impTasks = localStorage.getItem("impTasks");
+  let tasks = localStorage.getItem("tasks");
+  if (impTasks == null) {
+    impTasksList = [];
   } else {
-    impNotesList = JSON.parse(impNotes);
+    impTasksList = JSON.parse(impTasks);
   }
-  if (notes == null) {
-    notesList = [];
+  if (tasks == null) {
+    tasksList = [];
   } else {
-    notesList = JSON.parse(notes);
+    tasksList = JSON.parse(tasks);
   }
 
-  console.log(impNotesList);
+  // console.log(impTasksList);
 
-  impNotesList.sort(sortOrder("diff"));
-  notesList.sort(sortOrder("diff"));
-
-  console.log(impNotesList);
+  // console.log(impTasksList);
   let html = ``;
-  impNotesList.forEach((element, index) => {
+  impTasksList.forEach((element, index) => {
     if (params == "all") {
       html += `<div>
              <div class="cards ${currentTheme ? "cards-light" : "cards-dark"}">
@@ -233,7 +233,7 @@ function showTasks(params) {
         <p style="text-align: center; margin: 5px;" class="cardText">Due-Date: ${
           element.dueTime
         } <br> Created on: ${element.now}</p>
-        <button class="deleteBtn" onclick="deleteIt('impNotes', ${index})">Delete</button>
+        <button class="deleteBtn" onclick="deleteIt('impTasks', ${index})">Delete</button>
         </div>
       </div>`;
     } else {
@@ -251,13 +251,13 @@ function showTasks(params) {
         <p style="text-align: center; margin: 5px;" class="cardText">Due-Date: ${
           element.dueTime
         } <br> Created on: ${element.now}</p>
-        <button class="deleteBtn" onclick="deleteIt('impNotes', ${index})">Delete</button>
+        <button class="deleteBtn" onclick="deleteIt('impTasks', ${index})">Delete</button>
         </div>
       </div>`;
       }
     }
   });
-  notesList.forEach((element, index) => {
+  tasksList.forEach((element, index) => {
     if (params == "all") {
       html += `<div>
              <div class="cards ${currentTheme ? "cards-light" : "cards-dark"}">
@@ -271,7 +271,7 @@ function showTasks(params) {
         <p style="text-align: center; margin: 5px;" class="cardText">Due-Date: ${
           element.dueTime
         } <br> Created on: ${element.now}</p>
-        <button class="deleteBtn" onclick="deleteIt('notes', ${index})">Delete</button>
+        <button class="deleteBtn" onclick="deleteIt('tasks', ${index})">Delete</button>
       </div>
       </div>`;
     } else {
@@ -288,7 +288,7 @@ function showTasks(params) {
         <p style="text-align: center; margin: 5px;" class="cardText">Due-Date: ${
           element.dueTime
         } <br> Created on: ${element.now}</p>
-        <button class="deleteBtn" onclick="deleteIt('impNotes', ${index})">Delete</button>
+        <button class="deleteBtn" onclick="deleteIt('impTasks', ${index})">Delete</button>
         </div>
       </div>`;
       }
@@ -296,7 +296,7 @@ function showTasks(params) {
   });
 
   let noteBox = document.querySelector("#taskList");
-  if (impNotesList.length == 0 && notesList.length == 0) {
+  if (impTasksList.length == 0 && tasksList.length == 0) {
     noteBox.innerHTML = `<h2 style="text-align:center; color:#757575"> You don't have any task pending. </h2>`;
   } else {
     noteBox.innerHTML = html;
@@ -304,23 +304,27 @@ function showTasks(params) {
 }
 
 function deleteIt(lst, index) {
-  let notes1 = localStorage.getItem(lst);
-  if (notes1 == null) {
-    notesobj1 = [];
+  let tasks1 = localStorage.getItem(lst);
+  if (tasks1 == null) {
+    tasksobj1 = [];
   } else {
-    notesobj1 = JSON.parse(notes1);
+    tasksobj1 = JSON.parse(tasks1);
   }
-  notesobj1.splice(index, 1);
-  localStorage.setItem(lst, JSON.stringify(notesobj1));
+  tasksobj1.splice(index, 1);
+  localStorage.setItem(lst, JSON.stringify(tasksobj1));
   showTasks("all");
 }
 
 searchBar.addEventListener("input", () => {
   let val = searchBar.value.toLowerCase();
-  let cardNotes = document.getElementsByClassName("cards");
-  Array.from(cardNotes).forEach((element) => {
-    let temp = element.getElementsByTagName("p")[0].innerText;
-    let temp5 = element.getElementsByTagName("h3")[0].innerText;
+  let cardTasks = document.getElementsByClassName("cards");
+  Array.from(cardTasks).forEach((element) => {
+    let temp = element
+      .getElementsByClassName("cardHead")[0]
+      .innerText.toLowerCase();
+    let temp5 = element
+      .getElementsByClassName("cardText")[0]
+      .innerText.toLowerCase();
     if (temp.includes(val) || temp5.includes(val)) {
       element.parentElement.style.display = "block";
     } else {
@@ -332,7 +336,7 @@ searchBar.addEventListener("input", () => {
 filters.addEventListener("input", () => {
   currentFilter = filters.value;
   filters.value = "";
-  console.log(currentFilter);
+  // console.log(currentFilter);
   showTasks(currentFilter);
 });
 
